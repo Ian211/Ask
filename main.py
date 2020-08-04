@@ -56,6 +56,7 @@ class Recorder():
 
 class Asker():
     def __init__(self):
+        self.timeToAnswer=180
         self._count=0
         self._questions=[]
         self._types=[]
@@ -79,6 +80,8 @@ class Asker():
             if line.startswith("rate:"):
                 rate=float(line[len("rate:"):])
                 self.engine.setProperty('rate',rate)
+            if line.startswith("timeToAnswer:"):
+                self.timeToAnswer=float(line[len("timeToAnswer:"):])
         print("总题量：",self._count)
         print("当前语速为：", rate)
     def NewRound(self):
@@ -108,7 +111,6 @@ class Asker():
 
 if __name__ == "__main__":
     interviewer=Asker()
-    time_set=60
     while True:
         interviewer.round+=1
         interviewer.quesNo=0
@@ -138,7 +140,7 @@ if __name__ == "__main__":
                         if keyboard.is_pressed(' '):
                             print()
                             break
-                        if used_time<=time_set:
+                        if used_time<=interviewer.timeToAnswer:
                             print("\r%02d:%02d"%(m,s),end="")
                         else:
                             print("\n时间到")
